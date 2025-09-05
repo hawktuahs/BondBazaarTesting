@@ -1,9 +1,7 @@
 {
   "/page": "app/page.js",
-  "/portfolio/page": "app/portfolio/page.js",
-  "/wallet/page": "app/wallet/page.js",
-  "/api/ai/insights/route": "app/api/ai/insights/route.js",
   "/api/auth/me/route": "app/api/auth/me/route.js",
+  "/issuer/page": "app/issuer/page.js",
   "/api/bonds/route": "app/api/bonds/route.js",
-  "/settings/page": "app/settings/page.js"
+  "/api/ai/insights/route": "app/api/ai/insights/route.js"
 }

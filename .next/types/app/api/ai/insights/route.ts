@@ -1,4 +1,4 @@
-// File: C:\Users\regre\Downloads\SEBIhackathonRevamped\app\api\ai\insights\route.ts
+// File: C:\Users\regre\Downloads\BondBazaarPrototype-204c5ad9078e1a3e39e45cb89706c2456db4b352\app\api\ai\insights\route.ts
 import * as entry from '../../../../../../app/api/ai/insights/route.js'
 import type { NextRequest } from 'next/server.js'
 
