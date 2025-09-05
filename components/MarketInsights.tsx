@@ -26,11 +26,60 @@ export default function MarketInsights() {
       const res = await fetch('/api/ai/insights', { cache: 'no-store' })
       if (res.ok) {
         const data = await res.json()
-        setMarketData(data.marketData)
-        setNews(data.marketNews)
+        // Use the data if available, otherwise use fallback
+        if (data.marketData) {
+          setMarketData(data.marketData)
+        } else {
+          // Fallback data if API returns no data
+          setMarketData({
+            gSecYield10Y: 7.15,
+            gSecYield5Y: 6.95,
+            nifty: 19800,
+            sensex: 66500,
+            rupeeUSD: 83.25,
+            inflationRate: 5.85,
+            repoRate: 6.50
+          })
+        }
+        setNews(data.marketNews || [
+          "RBI keeps repo rate unchanged at 6.50% in latest policy review",
+          "Government bond yields edge higher on inflation concerns",
+          "Corporate bond issuances surge as companies look to lock in rates"
+        ])
+      } else {
+        // If API call fails, use fallback data
+        setMarketData({
+          gSecYield10Y: 7.15,
+          gSecYield5Y: 6.95,
+          nifty: 19800,
+          sensex: 66500,
+          rupeeUSD: 83.25,
+          inflationRate: 5.85,
+          repoRate: 6.50
+        })
+        setNews([
+          "RBI keeps repo rate unchanged at 6.50% in latest policy review",
+          "Government bond yields edge higher on inflation concerns",
+          "Corporate bond issuances surge as companies look to lock in rates"
+        ])
       }
     } catch (e) {
-      // ignore, fallbacks exist server-side
+      console.error('Failed to fetch market insights:', e)
+      // Use fallback data on error
+      setMarketData({
+        gSecYield10Y: 7.15,
+        gSecYield5Y: 6.95,
+        nifty: 19800,
+        sensex: 66500,
+        rupeeUSD: 83.25,
+        inflationRate: 5.85,
+        repoRate: 6.50
+      })
+      setNews([
+        "RBI keeps repo rate unchanged at 6.50% in latest policy review",
+        "Government bond yields edge higher on inflation concerns",
+        "Corporate bond issuances surge as companies look to lock in rates"
+      ])
     } finally {
       setLoading(false)
       setRefreshing(false)
