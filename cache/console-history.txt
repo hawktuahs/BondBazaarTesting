@@ -1,0 +1,18 @@
+npx prisma studio
+ethers.formatEther(bal)
+const bal = await erc20.balanceOf(issuer)
+ view returns (uint256)'], ethers.provider)
+const erc20 = new ethers.Contract(tokenAddr, ['function balanceOf(address)
+// verify issuer balance
+await tx.wait()
+Trade("TEST01", factory, issuer, amount, 0, ethers.id("INITIAL_ALLOCATION_TEST01"))
+coconst tx = await bf.execute
+nst tokenAddr = await bf.getBondToken("TEST01")
+const bf = awaco
+const issuer = "0x0618a3258701BE45146f0528e4603068B423bbf0" // your wallet
+const factory = "0xE7f7C64D5807032DA0e8CF5e99BDBB0650cd518e"
+node -e "require('dotenv').config();const {ethers}=require('ethers');(async()=>{const provider=new ethers.JsonRpcProvider(process.env.POLYGON_AMOY_RPC_URL);const bf=new ethers.Contract(process.env.BOND_FACTORY_ADDRESS,['function getBondToken(string) view returns (address)'],provider);console.log('Token address:',await bf.getBondToken('TEST01'));})();"
+const token =token
+const bf = await ethers.getContractAt("BondFactory", process.env.BOND_FACTORY_ADDRESS)
+await bf.getBondToken("TEST01")
+const bf = await ethers.getContractAt("BondFactory", "0xE7f7C64D5807032DA0e8CF5e99BDBB0650cd518e")

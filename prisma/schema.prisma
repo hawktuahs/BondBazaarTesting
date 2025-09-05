@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  displayName  String
+  kycVerified  Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+
+  orders       Order[]
+  balances     Balance[]
+
+  @@map("users")
+}
+
+model Bond {
+  id               String    @id @default(cuid())
+  symbol           String    @unique // e.g., "ABC28"
+  name             String    // e.g., "ABC Corp 2028"
+  pseudoISIN       String    @unique // e.g., "INE123A01028"
+  couponPct        Float     // e.g., 9.00  (Tip: consider Decimal for money)
+  rating           String    // "AAA", "AA", "A", "BBB"
+  faceValue        Int       @default(1000) // ₹1000 per token
+  issueDate        DateTime
+  maturityDate     DateTime
+  outstandingUnits Int       // total tokens issued
+  description      String?
+  contractAddress  String?   // ERC-20 address if deployed
+  createdAt        DateTime  @default(now())
+
+  orders           Order[]
+  trades           Trade[]
+  balances         Balance[]
+
+  @@map("bonds")
+}
+
+model Order {
+  id        String      @id @default(cuid())
+  userId    String
+  bondId    String
+  side      OrderSide   // "BUY" or "SELL"
+  price     Float       // price per token in ₹ (Tip: consider Decimal)
+  qty       Int         // number of tokens
+  qtyFilled Int         @default(0)
+  status    OrderStatus @default(OPEN)
+  createdAt DateTime    @default(now())
+
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bond      Bond        @relation(fields: [bondId], references: [id], onDelete: Cascade)
+
+  buyTrades  Trade[]    @relation("BuyOrder")
+  sellTrades Trade[]    @relation("SellOrder")
+
+  @@map("orders")
+}
+
+model Trade {
+  id          String   @id @default(cuid())
+  bondId      String
+  buyOrderId  String
+  sellOrderId String
+  price       Float    // execution price per token
+  qty         Int      // number of tokens traded
+  timestamp   DateTime @default(now())
+  txHash      String?  // blockchain transaction hash if on-chain
+
+  bond        Bond     @relation(fields: [bondId], references: [id], onDelete: Cascade)
+  buyOrder    Order    @relation("BuyOrder", fields: [buyOrderId], references: [id], onDelete: Cascade)
+  sellOrder   Order    @relation("SellOrder", fields: [sellOrderId], references: [id], onDelete: Cascade)
+
+  @@map("trades")
+}
+
+model Balance {
+  id       String @id @default(cuid())
+  userId   String
+  bondId   String
+  tokenQty Int    @default(0)
+
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bond     Bond   @relation(fields: [bondId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, bondId])
+  @@map("balances")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  type      String   // "TRADE", "ORDER", "TRANSFER", etc.
+  details   String   // JSON string
+  createdAt DateTime @default(now())
+
+  @@map("audit_logs")
+}
+
+enum OrderSide {
+  BUY
+  SELL
+}
+
+enum OrderStatus {
+  OPEN
+  PARTIAL
+  FILLED
+  CANCELLED
+}
