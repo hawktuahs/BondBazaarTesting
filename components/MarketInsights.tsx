@@ -71,13 +71,13 @@ export default function MarketInsights() {
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 animate-in fade-in-50">
-              <Metric label="10Y G-Sec" value={`${marketData.gSecYield10Y}%`} />
-              <Metric label="5Y G-Sec" value={`${marketData.gSecYield5Y}%`} />
-              <Metric label="Repo Rate" value={`${marketData.repoRate}%`} />
-              <Metric label="Inflation" value={`${marketData.inflationRate}%`} />
-              <Metric label="Nifty 50" value={`${marketData.nifty.toLocaleString()}`} />
-              <Metric label="Sensex" value={`${marketData.sensex.toLocaleString()}`} />
-              <Metric label="USD/INR" value={`${marketData.rupeeUSD}`} />
+              <Metric label="10Y G-Sec" value={marketData?.gSecYield10Y ? `${marketData.gSecYield10Y}%` : 'N/A'} />
+              <Metric label="5Y G-Sec" value={marketData?.gSecYield5Y ? `${marketData.gSecYield5Y}%` : 'N/A'} />
+              <Metric label="Repo Rate" value={marketData?.repoRate ? `${marketData.repoRate}%` : 'N/A'} />
+              <Metric label="Inflation" value={marketData?.inflationRate ? `${marketData.inflationRate}%` : 'N/A'} />
+              <Metric label="Nifty 50" value={marketData?.nifty ? marketData.nifty.toLocaleString() : 'N/A'} />
+              <Metric label="Sensex" value={marketData?.sensex ? marketData.sensex.toLocaleString() : 'N/A'} />
+              <Metric label="USD/INR" value={marketData?.rupeeUSD ? marketData.rupeeUSD.toString() : 'N/A'} />
             </div>
           )}
         </CardContent>
